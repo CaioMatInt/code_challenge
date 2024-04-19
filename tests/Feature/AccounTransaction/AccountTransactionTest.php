@@ -131,21 +131,21 @@ class AccountTransactionTest extends TestCase
         $this->assertEquals('The amount field is required.', $responseData['errors']['amount'][0]);
     }
 
-    public function test_should_return_validation_error_when_payment_type_code_is_null(): void
+    public function test_should_return_validation_error_when_transaction_type_code_is_null(): void
     {
         $account = Account::factory()->create([
             'user_id' => $this->user->id
         ]);
 
         $transactionBody = $this->getTransactionBody($this->accountTransactionType->code, $account->custom_identifier);
-        unset($transactionBody['payment_type_code']);
+        unset($transactionBody['transaction_type_code']);
 
         $response = $this->postJson(route('transaction.store'), $transactionBody);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $responseData = $response->json();
 
-        $this->assertEquals('The payment type name field is required.', $responseData['errors']['payment_type_code'][0]);
+        $this->assertEquals('The transaction type code field is required.', $responseData['errors']['transaction_type_code'][0]);
     }
 
     public function test_should_return_validation_error_when_amount_is_negative(): void
@@ -165,21 +165,21 @@ class AccountTransactionTest extends TestCase
         $this->assertEquals('The amount field must be at least 0.', $responseData['errors']['amount'][0]);
     }
 
-    public function test_should_return_validation_error_when_payment_type_code_is_invalid()
+    public function test_should_return_validation_error_when_transaction_type_code_is_invalid()
     {
         $account = Account::factory()->create([
             'user_id' => $this->user->id
         ]);
 
-        $transactionBody = $this->getTransactionBody('invalid_payment_type_code', $account->custom_identifier);
+        $transactionBody = $this->getTransactionBody('invalid_transaction_type_code', $account->custom_identifier);
 
         $response = $this->postJson(route('transaction.store'), $transactionBody);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $responseData = $response->json();
 
-        $this->assertEquals('The payment_type_code field must be one of the following values: '
-            . implode(',', PaymentTypeCodeEnum::values()), $responseData['errors']['payment_type_code'][0]);
+        $this->assertEquals('The transaction_type_code field must be one of the following values: '
+            . implode(',', PaymentTypeCodeEnum::values()), $responseData['errors']['transaction_type_code'][0]);
     }
 
     public function test_should_return_validation_error_when_amount_is_greater_than_balance(): void

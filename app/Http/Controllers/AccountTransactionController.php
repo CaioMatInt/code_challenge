@@ -18,7 +18,7 @@ class AccountTransactionController extends Controller
 
     public function store(StoreAccountTransactionRequest $request): JsonResponse
     {
-        $this->accountTransactionService->store($request->payment_type_code, $request->custom_identifier, $request->amount);
+        $this->accountTransactionService->store($request->transaction_type_code, $request->custom_identifier, $request->amount);
         $account = $this->accountRepository->findByCustomIdentifier($request->custom_identifier);
         // Forcing this status to meet the test requirements
         return (new AccountResource($account))->response()->setStatusCode(Response::HTTP_CREATED);
