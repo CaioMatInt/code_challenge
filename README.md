@@ -4,7 +4,7 @@ Create a bank management system through an API, consisting of two endpoints: **/
 
 The **/account** endpoint should create and provide information about the account number and balance. The **/transaction** endpoint will be responsible for carrying out various financial operations.
 
-> PS: This coding challenge was migrated from a private repository, and the specifications were altered to protect and anonymize it since it is a challenge specific of a particular company.
+> PS: This coding challenge was migrated from a private repository that I own, and the specifications were altered to protect and anonymize it, since it originates from a challenge specific of a particular company.
 
 ___
 **Payment Methods:**
