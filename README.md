@@ -5,11 +5,13 @@ Create a bank management system through an API, consisting of two endpoints: **/
 The **/account** endpoint should create and provide information about the account number and balance. The **/transaction** endpoint will be responsible for carrying out various financial operations.
 
 There are three available transaction types: **debit**, **credit**, and **Pix**, each with different fees.
+
 Use the following abbreviations for payment methods:
 
     P => Pix, C => Credit Card & D => Debit Card
 
 **Fees:**
+
 Each type of transaction should have a specific fee, with the fees being:
 
     Debit fee: 3% of the transaction
