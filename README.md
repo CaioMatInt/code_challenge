@@ -52,7 +52,8 @@ GET **/account?id=1234**
 ![image](https://user-images.githubusercontent.com/40992883/178123101-c9fb1ecf-d56b-4237-b4cc-526d33aa79d3.png)
 
 ## Postman Collection
-The Postman collection can be found at the root of the project.
+The Postman collection can be found at the root of the project
+> payment_challenge.postman_collection.json
 
 ## Tests
 PhpUnit was used for implementing automated tests. The tests are located in app/tests.
