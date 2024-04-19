@@ -43,9 +43,9 @@ POST **/account**
 
 GET **/account?id=1234**
 
-> Output => If the account does not exist, return HTTP STATUS 404 If the account exists, return
+> Output => HTTP STATUS 200 and a JSON `{"account_id": 1234, "balance": 200}`
 > 
-> HTTP STATUS 200 and a JSON: `{"account_id": 1234, "balance": 200}`
+> If the account does not exist, return HTTP STATUS 404 If the account exists, return`
 
 ## Database diagram
 ![image](https://github.com/CaioMatInt/payment_challenge/assets/40992883/aa649f6e-713d-4a32-be69-b5151b1a73fb)
