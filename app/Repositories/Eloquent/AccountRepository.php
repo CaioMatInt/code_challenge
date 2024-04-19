@@ -37,14 +37,14 @@ class AccountRepository
         return $account;
     }
 
-    public function find(int $id): Account
+    public function findOrFail(int $id): Account
     {
         return $this->model->findOrFail($id);
     }
 
     public function update(int $id, array $values): bool
     {
-        $account = $this->find($id);
+        $account = $this->findOrFail($id);
 
         return $account->update($values);
     }

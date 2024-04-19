@@ -84,7 +84,7 @@ class AccountRepositoryTest extends TestCase
 
         $account = $this->accountRepository->create(1, $this->defaultInitialBalance);
 
-        $foundAccount = $this->accountRepository->find($account->id);
+        $foundAccount = $this->accountRepository->findOrFail($account->id);
 
         $this->assertEquals($account->id, $foundAccount->id);
         $this->assertEquals($account->custom_identifier, $foundAccount->custom_identifier);
