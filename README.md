@@ -51,7 +51,7 @@ GET **/account?id=1234**
 ![image](https://github.com/CaioMatInt/payment_challenge/assets/40992883/aa649f6e-713d-4a32-be69-b5151b1a73fb)
 
 ## System Architecture
-![image](https://github.com/CaioMatInt/payment_challenge/assets/40992883/3749f47c-22d8-49d6-a56e-7ec97e1736af)
+![image](https://github.com/CaioMatInt/payment_challenge/assets/40992883/04f93f6b-7fdc-4fbf-9bb8-7c2b70f04648)
 
 ## Postman Collection
 The Postman collection can be found at the root of the project
