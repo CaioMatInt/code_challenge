@@ -32,14 +32,14 @@ class StoreAccountTransactionRequest extends FormRequest
                 'min:0',
                 new SufficientBalanceRule(app(AccountRepository::class), $this->input('custom_identifier'))
             ],
-            'forma_pagamento' => 'required|string|in:' . implode(',', $paymentTypeCodes),
+            'payment_type_code' => 'required|string|in:' . implode(',', $paymentTypeCodes),
         ];
     }
 
     public function messages(): array
     {
         return [
-            'forma_pagamento.in' => 'The forma_pagamento field must be one of the following values: '
+            'payment_type_code.in' => 'The payment_type_code field must be one of the following values: '
                 . implode(',', PaymentTypeCodeEnum::values()),
         ];
     }

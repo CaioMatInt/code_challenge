@@ -29,12 +29,12 @@ Route::prefix('users')->group(function () {
         Route::get('me', [UserController::class, 'getAuthenticatedUser'])->name('user.me');
         Route::post('{id}/update', [UserController::class, 'update'])->name('user.update');
 
-        Route::prefix('account')->group(function () {
+        Route::prefix('accounts')->group(function () {
             Route::post('', [AccountController::class, 'store'])->name('account.store');
             Route::get('', [AccountController::class, 'show'])->name('account.show');
         });
 
-        Route::prefix('transaction')->group(function () {
+        Route::prefix('transactions')->group(function () {
             Route::post('', [AccountTransactionController::class, 'store'])->name('transaction.store');
         });
     });

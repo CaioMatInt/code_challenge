@@ -138,14 +138,14 @@ class AccountTransactionTest extends TestCase
         ]);
 
         $transactionBody = $this->getTransactionBody($this->accountTransactionType->code, $account->custom_identifier);
-        unset($transactionBody['forma_pagamento']);
+        unset($transactionBody['payment_type_code']);
 
         $response = $this->postJson(route('transaction.store'), $transactionBody);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $responseData = $response->json();
 
-        $this->assertEquals('The forma pagamento field is required.', $responseData['errors']['forma_pagamento'][0]);
+        $this->assertEquals('The payment type name field is required.', $responseData['errors']['payment_type_code'][0]);
     }
 
     public function test_should_return_validation_error_when_amount_is_negative(): void
@@ -178,8 +178,8 @@ class AccountTransactionTest extends TestCase
 
         $responseData = $response->json();
 
-        $this->assertEquals('The forma_pagamento field must be one of the following values: '
-            . implode(',', PaymentTypeCodeEnum::values()), $responseData['errors']['forma_pagamento'][0]);
+        $this->assertEquals('The payment_type_code field must be one of the following values: '
+            . implode(',', PaymentTypeCodeEnum::values()), $responseData['errors']['payment_type_code'][0]);
     }
 
     public function test_should_return_validation_error_when_amount_is_greater_than_balance(): void

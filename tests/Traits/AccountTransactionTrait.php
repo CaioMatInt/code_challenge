@@ -8,7 +8,7 @@ trait AccountTransactionTrait
         return [
             'custom_identifier' => $customerIdentifier,
             'amount' => 100,
-            'forma_pagamento' => $transactionTypeCode
+            'payment_type_code' => $transactionTypeCode
         ];
     }
 

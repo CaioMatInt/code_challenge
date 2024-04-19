@@ -377,7 +377,7 @@
 									"type": "text"
 								},
 								{
-									"key": "forma_pagamento",
+									"key": "payment_type_code",
 									"value": "C",
 									"type": "text"
 								},
