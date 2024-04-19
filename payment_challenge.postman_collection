@@ -249,7 +249,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{ip}}/api/users/conta?id=32132132",
+							"raw": "{{ip}}/api/users/conta?id=7777",
 							"host": [
 								"{{ip}}"
 							],
@@ -261,7 +261,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "32132132"
+									"value": "7777"
 								}
 							]
 						}
@@ -306,25 +306,25 @@
 							"formdata": [
 								{
 									"key": "custom_identifier",
-									"value": "32132132",
+									"value": "7777",
 									"type": "text"
 								},
 								{
-									"key": "valor",
+									"key": "amount",
 									"value": "200",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{ip}}/api/users/conta",
+							"raw": "{{ip}}/api/users/accounts",
 							"host": [
 								"{{ip}}"
 							],
 							"path": [
 								"api",
 								"users",
-								"conta"
+								"accounts"
 							]
 						}
 					},
@@ -372,8 +372,8 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "valor",
-									"value": "1000",
+									"key": "amount",
+									"value": "99",
 									"type": "text"
 								},
 								{
@@ -383,20 +383,20 @@
 								},
 								{
 									"key": "custom_identifier",
-									"value": "32132132",
+									"value": "7777",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{ip}}/api/users/transacao",
+							"raw": "{{ip}}/api/users/transactions",
 							"host": [
 								"{{ip}}"
 							],
 							"path": [
 								"api",
 								"users",
-								"transacao"
+								"transactions"
 							]
 						}
 					},
