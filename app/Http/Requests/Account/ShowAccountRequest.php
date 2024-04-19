@@ -19,14 +19,14 @@ class ShowAccountRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|integer|exists:accounts,custom_identifier,user_id,' . auth()->id(),
+            'custom_identifier' => 'required|integer|exists:accounts,custom_identifier,user_id,' . auth()->id(),
         ];
     }
 
     public function all($keys = null)
     {
         $data = parent::all($keys);
-        return ['id' => $data['id']];
+        return ['custom_identifier' => $data['id']];
     }
 
     protected function failedValidation(Validator $validator)

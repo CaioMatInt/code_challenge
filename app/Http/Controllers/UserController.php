@@ -10,7 +10,6 @@ use App\Http\Requests\User\ResetPasswordRequest;
 use App\Http\Requests\User\SendPasswordResetLinkEmailRequest;
 use App\Http\Resources\User\UserLoginResource;
 use App\Http\Resources\User\UserResource;
-use App\Repositories\Eloquent\UserRepository;
 use App\Services\Authentication\ProviderService;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
@@ -20,7 +19,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class UserController extends Controller
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
         private readonly UserService $userService,
         private readonly ProviderService $providerService
     ) { }
@@ -57,13 +55,13 @@ class UserController extends Controller
     {
         $data = $request->only('name', 'email', 'password', 'profile_type');
         $data['password'] = bcrypt($data['password']);
-        $this->userRepository->create($data);
+        $this->userService->create($data);
         return response([], Response::HTTP_CREATED);
     }
 
     public function getAuthenticatedUser(): Response
     {
-        $userResource = new UserResource($this->userRepository->getAuthenticatedUser());
+        $userResource = new UserResource($this->userService->getAuthenticatedUser());
         return response($userResource);
     }
 

@@ -3,18 +3,18 @@
 namespace App\Services\AccountTransaction;
 
 use App\Events\AccountTransactionCreatedEvent;
+use App\Exceptions\Account\AccountNotFoundException;
 use App\Exceptions\AccountTransaction\NotEnoughFundsToProcessTransactionWithTaxesException;
+use App\Exceptions\AccountTransactionType\AccountTransactionTypeNotFoundException;
 use App\Models\Account;
-use App\Repositories\Eloquent\AccountRepository;
-use App\Repositories\Eloquent\AccountTransactionRepository;
-use App\Repositories\Eloquent\AccountTransactionTypeRepository;
+use App\Services\AccountTransactionType\AccountTransactionTypeService;
 
 abstract class AbstractBaseTransactionService implements TransactionServiceInterface
 {
     public function __construct(
-        private readonly AccountRepository $accountRepository,
-        private readonly AccountTransactionTypeRepository $accountTransactionTypeRepository,
-        private readonly AccountTransactionRepository $accountTransactionRepository,
+        private readonly Account $accountModel,
+        private readonly AccountTransactionTypeService $accountTransactionTypeService,
+        private readonly AccountTransactionService $accountTransactionService
     ) { }
     protected string $paymentTypeCode;
 
@@ -24,17 +24,23 @@ abstract class AbstractBaseTransactionService implements TransactionServiceInter
         return $value + $fee;
     }
 
-    public function processTransaction(int $customerIdentifier, int $value)
+
+    /**
+     * @throws AccountNotFoundException
+     * @throws AccountTransactionTypeNotFoundException
+     * @throws NotEnoughFundsToProcessTransactionWithTaxesException
+     */
+    public function processTransaction(int $customerIdentifier, int $value): void
     {
-        $accountTransactionType = $this->accountTransactionTypeRepository->findByCode($this->paymentTypeCode);
+        $accountTransactionType = $this->accountTransactionTypeService->findCachedWhereCode($this->paymentTypeCode);
 
         $transactionAmount = $this->calculateAmountToDeductWithFee($value, $accountTransactionType->fee_rate);
 
-        $account = $this->accountRepository->findByCustomIdentifier($customerIdentifier);
+        $account = $this->accountModel::whereCustomIdentifier($customerIdentifier)->first();
 
         $this->checkIfUserCanPayTheAmountWithTaxes($account, $transactionAmount);
 
-        $accountTransaction = $this->accountTransactionRepository->create(
+        $accountTransaction = $this->accountTransactionService->create(
             $account->id,
             $accountTransactionType->id,
             $transactionAmount

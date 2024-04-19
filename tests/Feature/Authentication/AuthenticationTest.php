@@ -503,6 +503,7 @@ class AuthenticationTest extends TestCase
         $this->makeSocialiteServiceStub('login', $this->googleResponse);
 
         $this->get(route('user.login.provider.callback', $this->googleProvider->name));
+
         $this->assertTrue(Auth::check());
     }
 

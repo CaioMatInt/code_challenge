@@ -3,8 +3,8 @@
 namespace App\Http\Requests\AccountTransaction;
 
 use App\Enums\PaymentTypeCodeEnum;
-use App\Repositories\Eloquent\AccountRepository;
-use App\Rules\AccountTransaction\SufficientBalanceRule;
+use App\Rules\AccountTransaction\SufficientBalanceNotConsideringTaxesRule;
+use App\Services\Account\AccountService;
 use App\Traits\Request\CustomResponseRequestTrait;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -30,7 +30,7 @@ class StoreAccountTransactionRequest extends FormRequest
                 'required',
                 'integer',
                 'min:0',
-                new SufficientBalanceRule(app(AccountRepository::class), $this->input('custom_identifier'))
+                new SufficientBalanceNotConsideringTaxesRule(app(AccountService::class), $this->input('custom_identifier'))
             ],
             'transaction_type_code' => 'required|string|in:' . implode(',', $paymentTypeCodes),
         ];

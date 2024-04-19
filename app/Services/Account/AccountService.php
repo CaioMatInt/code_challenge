@@ -1,33 +1,30 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Services\Account;
 
 use App\Exceptions\Account\AccountNotFoundException;
 use App\Models\Account;
 use Illuminate\Support\Facades\Cache;
 
-class AccountRepository
+class AccountService
 {
-    protected $model;
-
-    public function __construct(Account $model)
+    public function __construct(private readonly Account $model)
     {
-        $this->model = $model;
     }
 
     public function create(int $customerIdentifier, int $initialBalance): Account
     {
-        return $this->model->create([
+        return $this->model::create([
             'user_id' => auth()->id(),
             'custom_identifier' => $customerIdentifier,
             'balance' => $initialBalance
         ]);
     }
 
-    public function findByCustomIdentifier(int $customIdentifier): Account
+    public function findCachedByCustomIdentifier(int $customIdentifier): Account
     {
         $account = Cache::rememberForever('account_' . $customIdentifier, function () use ($customIdentifier) {
-            return $this->model->where('custom_identifier', $customIdentifier)->first();
+            return $this->model::whereCustomIdentifier($customIdentifier)->first();
         });
 
         if (!$account) {
@@ -37,14 +34,9 @@ class AccountRepository
         return $account;
     }
 
-    public function findOrFail(int $id): Account
-    {
-        return $this->model->findOrFail($id);
-    }
-
     public function update(int $id, array $values): bool
     {
-        $account = $this->findOrFail($id);
+        $account = $this->model::findOrFail($id);
 
         return $account->update($values);
     }

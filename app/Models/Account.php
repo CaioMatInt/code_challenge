@@ -24,4 +24,9 @@ class Account extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function scopeWhereCustomIdentifier($query, int $customIdentifier)
+    {
+        return $query->where('custom_identifier', $customIdentifier);
+    }
 }

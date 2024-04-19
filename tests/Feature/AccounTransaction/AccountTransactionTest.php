@@ -43,6 +43,7 @@ class AccountTransactionTest extends TestCase
         $transactionBody = $this->getTransactionBody($this->accountTransactionType->code, $account->custom_identifier);
 
         $response = $this->postJson(route('transaction.store'), $transactionBody);
+
         $response->assertStatus(Response::HTTP_CREATED);
 
         $responseData = $response->json();

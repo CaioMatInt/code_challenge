@@ -1,27 +1,27 @@
 <?php
 
-namespace Repositories\AccountTransaction;
+namespace Tests\Unit\Services;
 
 use App\Models\Account;
 use App\Models\AccountTransactionType;
-use App\Repositories\Eloquent\AccountTransactionRepository;
+use App\Services\AccountTransaction\AccountTransactionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tests\Traits\UserTrait;
 
-class AccountTransactionRepositoryTest extends TestCase
+class AccountTransactionServiceTest extends TestCase
 {
     use RefreshDatabase;
     use UserTrait;
 
-    private AccountTransactionRepository $accountTransactionRepository;
+    private AccountTransactionService $accountTransactionService;
     private int $defaultInitialBalance = 1000;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->accountTransactionRepository = app(AccountTransactionRepository::class);
+        $this->accountTransactionService = app(AccountTransactionService::class);
         $this->mockVariables();
     }
 
@@ -39,7 +39,7 @@ class AccountTransactionRepositoryTest extends TestCase
             'user_id' => $this->user->id,
         ]);
 
-        $this->accountTransactionRepository->create(
+        $this->accountTransactionService->create(
             $account->id,
             $accountTransactionType->id,
             $this->defaultInitialBalance

@@ -1,26 +1,26 @@
 <?php
 
-namespace Repositories\AccountTransactionType;
+namespace Services;
 
 use App\Models\AccountTransactionType;
-use App\Repositories\Eloquent\AccountTransactionTypeRepository;
+use App\Services\AccountTransactionType\AccountTransactionTypeService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 use Tests\Traits\UserTrait;
 
-class AccountTransactionTypeRepositoryTest extends TestCase
+class AccountTransactionTypeServiceTest extends TestCase
 {
     use RefreshDatabase;
     use UserTrait;
 
-    private AccountTransactionTypeRepository $accountTransactionTypeRepository;
+    private AccountTransactionTypeService $accountTransactionTypeService;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->accountTransactionTypeRepository = app(AccountTransactionTypeRepository::class);
+        $this->accountTransactionTypeService = app(AccountTransactionTypeService::class);
         $this->mockVariables();
     }
 
@@ -35,7 +35,7 @@ class AccountTransactionTypeRepositoryTest extends TestCase
 
         $accountTransactionType = AccountTransactionType::factory()->create();
 
-        $foundAccountTransactionType = $this->accountTransactionTypeRepository->findByCode($accountTransactionType->code);
+        $foundAccountTransactionType = $this->accountTransactionTypeService->findCachedWhereCode($accountTransactionType->code);
 
         $this->assertEquals($accountTransactionType->id, $foundAccountTransactionType->id);
     }
@@ -46,7 +46,7 @@ class AccountTransactionTypeRepositoryTest extends TestCase
 
         $accountTransactionType = AccountTransactionType::factory()->create();
 
-        $accountTransactionType = $this->accountTransactionTypeRepository->findByCode($accountTransactionType->code);
+        $accountTransactionType = $this->accountTransactionTypeService->findCachedWhereCode($accountTransactionType->code);
 
         $this->assertTrue(Cache::has('account_transaction_type_code' . $accountTransactionType->code));
     }

@@ -60,4 +60,18 @@ class User extends Authenticatable
     {
         return $this->hasMany(Account::class);
     }
+
+    public function scopeWhereExternalProviderId($query, string $externalProviderId)
+    {
+        return $query->where('external_provider_id', $externalProviderId);
+    }
+
+    public static function findProviderNameByEmail(string $email): ?string
+    {
+        $user = self::where('email', $email)
+            ->with(['provider:id,name'])
+            ->first(['id']);
+
+        return $user->provider->name ?? null;
+    }
 }

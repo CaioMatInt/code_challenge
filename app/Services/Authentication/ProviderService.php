@@ -2,9 +2,8 @@
 
 namespace App\Services\Authentication;
 
+use App\Models\Provider;
 use App\Models\User;
-use App\Repositories\Eloquent\ProviderRepository;
-use App\Repositories\Eloquent\UserRepository;
 use App\Services\User\UserService;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,9 +12,8 @@ class ProviderService
 {
 
     public function __construct(
-        private UserRepository $userRepository,
+        private User $userModel,
         private SocialiteService $socialiteService,
-        private ProviderRepository $providerRepository,
         private UserService $userService
     ) { }
 
@@ -38,7 +36,7 @@ class ProviderService
 
     protected function findOrCreateUserFromProviderData(object $providerSocialiteUser, string $providerName): User
     {
-        $user = $this->userRepository->findByExternalProviderId($providerSocialiteUser->id);
+        $user = User::whereExternalProviderId($providerSocialiteUser->id)->first();
 
         if (!$user) {
             $this->userService->checkProviderMatchOrThrow($providerSocialiteUser->email, $providerName);
@@ -50,10 +48,10 @@ class ProviderService
 
     protected function createUserFromProviderData(object $providerSocialiteUser, string $providerName): User
     {
-        return $this->userRepository->create([
+        return $this->userModel->create([
             'name' => $providerSocialiteUser->name ?? $providerSocialiteUser->nickname,
             'email' => $providerSocialiteUser->email,
-            'provider_id' => $this->providerRepository->getIdByName($providerName),
+            'provider_id' => Provider::selectIdByName($providerName)->firstOrFail()->id,
             'external_provider_id' => $providerSocialiteUser->id,
         ]);
     }

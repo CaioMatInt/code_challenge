@@ -4,7 +4,6 @@ namespace App\Services\User;
 
 use App\Exceptions\Authentication\ProviderMismatchException;
 use App\Models\User;
-use App\Repositories\Eloquent\UserRepository;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 class UserService
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly User $model
     ) { }
 
     public function login(string $email, string $password): void
@@ -89,10 +88,20 @@ class UserService
      */
     public function checkProviderMatchOrThrow(string $userEmail, string $providerName): void
     {
-        $userProviderName = $this->userRepository->findUserProviderNameByEmail($userEmail);
+        $userProviderName = User::findProviderNameByEmail($userEmail);
 
         if ($userProviderName && $userProviderName !== $providerName) {
             throw new ProviderMismatchException($userEmail, $providerName);
         }
+    }
+
+    public function getAuthenticatedUser(): User
+    {
+        return auth()->user();
+    }
+
+    public function create(array $data): User
+    {
+        return $this->model->create($data);
     }
 }

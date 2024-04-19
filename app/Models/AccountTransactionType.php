@@ -25,4 +25,9 @@ class AccountTransactionType extends Model
     {
         return $this->hasMany(AccountTransaction::class);
     }
+
+    public function scopeWhereCode($query, string $code)
+    {
+        return $query->where('code', $code);
+    }
 }

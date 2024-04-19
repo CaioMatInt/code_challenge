@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Services\AccountTransactionType;
 
 use App\Exceptions\AccountTransactionType\AccountTransactionTypeNotFoundException;
 use App\Models\AccountTransactionType;
 use Illuminate\Support\Facades\Cache;
 
-class AccountTransactionTypeRepository
+class AccountTransactionTypeService
 {
-    protected $model;
 
-    public function __construct(AccountTransactionType $model)
+    public function __construct(private readonly AccountTransactionType $model)
     {
-        $this->model = $model;
     }
 
-    public function findByCode(string $code): AccountTransactionType
+    /**
+     * @throws AccountTransactionTypeNotFoundException
+     */
+    public function findCachedWhereCode(string $code): AccountTransactionType
     {
         $accountTransactionType = Cache::rememberForever('account_transaction_type_code' . $code, function () use ($code) {
-            return $this->model->where('code', $code)->first();
+            return $this->model::whereCode($code)->first();
         });
 
         if (!$accountTransactionType) {
@@ -27,4 +28,5 @@ class AccountTransactionTypeRepository
 
         return $accountTransactionType;
     }
+
 }

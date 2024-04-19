@@ -3,13 +3,13 @@
 namespace App\Listeners;
 
 use App\Events\AccountTransactionCreatedEvent;
-use App\Repositories\Eloquent\AccountRepository;
+use App\Services\Account\AccountService;
 use App\Services\AccountTransaction\AccountTransactionService;
 
 class DeductTransactionFromAccountBalanceListener
 {
     public function __construct(
-        private readonly AccountRepository $accountRepository,
+        private readonly AccountService $accountService,
         private readonly AccountTransactionService $accountTransactionService
     )
     { }
@@ -21,6 +21,6 @@ class DeductTransactionFromAccountBalanceListener
             $event->accountTransaction->amount
         );
 
-        $this->accountRepository->update($event->account->id, ['balance' => $newAccountBalance]);
+        $this->accountService->update($event->account->id, ['balance' => $newAccountBalance]);
     }
 }

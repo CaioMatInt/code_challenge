@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Enums\PaymentTypeCodeEnum;
+use App\Models\AccountTransactionType;
 use Illuminate\Database\Seeder;
-use \App\Models\AccountTransactionType;
 
 class AccountTransactionTypeSeeder extends Seeder
 {
